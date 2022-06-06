@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+
+  <head>
+    <title>MountLocus</title>
+
+    <!-- #region css scripts -->
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+    />
+
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link href="assets/bootstrap-table.min.css" rel="stylesheet" />
+    <link
+      href="assets/extensions/filter-control/bootstrap-table-filter-control.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"
+    />
+
+    <link href="assets/styletryout.css" rel="stylesheet" />
+
+    <!-- #endregion -->
+
+    <!-- #region js CDN scripts -->
+
+    <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.matchHeight/0.7.0/jquery.matchHeight-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+    <script src="https://unpkg.com/browse/tableexport.jquery.plugin@1.10.3/libs/jsPDF/jspdf.min.js"></script>
+    <script src="https://unpkg.com/browse/tableexport.jquery.plugin@1.10.3/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="assets/bootstrap-table.min.js"></script>
+    <script src="assets/extensions/toolbar/bootstrap-table-toolbar.min.js"></script>
+    <script src="assets/extensions/export/bootstrap-table-export.min.js"></script>
+    <script src="assets/extensions/filter-control/bootstrap-table-filter-control.js"></script>
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="Cytoscape/cytoscape.js-popper/cytoscape-popper.js"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <!-- #endregion -->
+  </head>
+
+  <body>
+    <div class="page_content">
+      <img id="mountainImage" src="assets/resources/p3.jpg" />
+
+      <div class="scrolldown" id="scrolldownTable">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="pic-ctn">
+        <img
+          src="./assets/pitch_deck_assets/landing_page.png"
+          alt=""
+          class="pic"
+        />
+        <img
+          src="./assets/pitch_deck_assets/alegere_traseu.png"
+          alt=""
+          class="pic"
+        />
+        <img
+          src="./assets/pitch_deck_assets/afisare_date.png"
+          alt=""
+          class="pic"
+        />
+        <img
+          src="./assets/pitch_deck_assets/ar_user_phone.jpg"
+          alt=""
+          class="pic"
+        />
+        <a class="google_play">
+          <img
+            class="google_play_img"
+            src="./assets/pitch_deck_assets/google_play.png"
+            alt=""
+          />
+        </a>
+      </div>
+
+      <div id="mapid"></div>
+
+      <br />
+
+      <div style="text-align: center">
+        <select
+          class="selectpicker"
+          id="selectpicker"
+          showtick="true"
+          multiple
+          data-max-options="1"
+          data-live-search="true"
+          data-width="fit"
+          title="Alegeti data pentru filtrare .."
+        ></select>
+      </div>
+
+      <div class="container mt-2 mb-2" id="TableContainer">
+        <div id="toolbar">
+          <button id="remove" class="btn btn-danger">Remove</button>
+          <button id="removeall" class="btn btn-danger">Remove All</button>
+        </div>
+        <table
+          id="table"
+          data-id-table="advancedTable"
+          data-toggle="table"
+          data-pagination="true"
+          data-search="true"
+          data-search-align="right"
+          data-show-columns="true"
+          data-show-toggle="true"
+          data-show-refresh="true"
+          data-show-fullscreen="true"
+          data-show-pagination-switch="true"
+          data-pagination-pre-text="Previous"
+          data-pagination-next-text="Next"
+          data-pagination-h-align="left"
+          data-pagination-detail-h-align="right"
+          data-page-list="[10,20,30,40,50,All]"
+          data-detail-view="true"
+          data-detail-formatter="detailFormatter"
+          data-show-footer="true"
+          data-show-export="true"
+          data-click-to-select="true"
+          data-toolbar="#toolbar"
+          data-advanced-search="true"
+          data-filter-control="true"
+          data-filter-show-clear="true"
+        >
+          <thead>
+            <tr>
+              <th
+                rowspan="2"
+                data-checkbox="true"
+                data-valign="middle"
+                data-halign="middle"
+              ></th>
+              <th colspan="8" data-align="center">Header</th>
+            </tr>
+
+            <tr>
+              <th
+                style="width: 10%"
+                data-field="id"
+                data-sortable="true"
+                data-switchable="false"
+              >
+                ID
+              </th>
+              <th
+                data-field="Nume si prenume"
+                data-sortable="true"
+                data-switchable="false"
+                data-align="center"
+                data-filter-control="input"
+              >
+                Nume si Prenume
+              </th>
+              <th
+                style="width: 16.66%"
+                data-field="Telefon"
+                data-sortable="true"
+                data-filter-control="select"
+                data-align="center"
+              >
+                Telefon
+              </th>
+              <th
+                data-field="GrupaMontana"
+                data-sortable="true"
+                data-filter-control="select"
+                data-align="center"
+              >
+                Grupa montana
+              </th>
+              <th
+                data-field="DenumireTraseu"
+                data-sortable="true"
+                data-filter-control="select"
+                data-align="center"
+              >
+                Traseu montan
+              </th>
+
+              <th
+                data-field="Data"
+                data-sortable="true"
+                data-footer-formatter="totalFormatter"
+                data-footer-formatter-align="center"
+                data-filter-control="input"
+                data-align="center"
+              >
+                Data
+              </th>
+
+              <th
+                data-field="Latitudine"
+                data-sortable="true"
+                data-filter-control="select"
+                data-align="center"
+              >
+                Latitudine
+              </th>
+              <th
+                data-field="Longitudine"
+                data-sortable="true"
+                data-filter-control="select"
+                data-footer-formatter="amountFormatter"
+                data-align="center"
+              >
+                Longitudine
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tablebody">
+            <!-- <td></td>
+            <td>1</td>
+            <td>Bogdan Tudose</td>
+            <td>0757352721</td>
+            <td>Bucegi</td>
+            <td style="height: 100px;">
+              Busteni – Plaiul Munticelu – Poiana Costilei (1.360 m) – Pichetul
+              Roșu (1.445 m) – La Prepeleac (1.750 m) – Mălăiești (1 720 m)
+            </td>
+            <td>2020/05/07</td>
+            <td>44.456675</td>
+            <td>26.06423</td>
+          
+          <tr>
+            <td></td>
+            <td>1</td>
+            <td>Bogdan Tudose</td>
+            <td>0757352721</td>
+            <td>Bucegi</td>
+            <td style="height: 100px;">
+              Busteni – Plaiul Munticelu
+            </td>
+            <td>2020/05/07</td>
+            <td>44.456675</td>
+            <td>26.06423</td>
+          </tr>  -->
+            <!-- <tr id="rowcustom">
+            <td></td>
+            <td>1</td>
+            <td>Bogdan Tudose</td>
+            <td>0757352721</td>
+            <td>Bucegi</td>
+            <td style="height: 100px;">
+              Busteni – Plaiul Munticelu – Poiana Costilei (1.360 m) – Pichetul
+              Roșu (1.445 m) – La Prepeleac (1.750 m) – Mălăiești (1 720 m)
+            </td>
+            <td>2020/05/07</td>
+            <td>44.456675</td>
+            <td>26.06423</td>
+          </tr> -->
+          </tbody>
+        </table>
+      </div>
+      <div class="scrolldown" id="scrolldownGraph">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <div class="cytoscape-data">
+        <div class="cytoscape-graph-title">
+          <span>Graficul traseelor din masiv</span>
+        </div>
+        <pre id="data"></pre>
+        <div id="cy"></div>
+      </div>
+    </div>
+
+    <script></script>
+  </body>
+</html>
