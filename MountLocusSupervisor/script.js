@@ -93,7 +93,7 @@ function processFirebaseData(ref) {
 
 //#region GRAPH
 
-function initGraph() {
+function initGraph(graphData) {
   var cy = (window.cy = cytoscape({
     container: document.getElementById("cy"),
     wheelSensitivity: 0.1,
@@ -170,6 +170,19 @@ function initGraph() {
   var tippyAB = makeTippy(ab, "baz");
 
   tippyAB.show();
+}
+
+function initGraphData() {
+  fetch("https://api.jsonbin.io/b/629febf8449a1f382100d214")
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.hasOwnProperty("trasee")) {
+        initGraph(data["trasee"]);
+      } else {
+        console.log("Unable to parse data from API");
+      }
+    })
+    .catch((error) => console.log(error));
 }
 
 //#endregion
@@ -299,7 +312,7 @@ document.addEventListener("DOMContentLoaded", function () {
   initComponentsEvents();
   querySelectOnVariables();
   initFirebase();
-  initGraph();
+  initGraphData();
   initMap();
 });
 

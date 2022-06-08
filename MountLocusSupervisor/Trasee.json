@@ -1,0 +1,258 @@
+[
+  {
+    "list": [
+      {
+        "denumire": "Bucegi",
+        "trasee": [
+          {
+            "traseu": "Busteni – Plaiul Munticelu – Poiana Costilei (1.360 m) – Pichetul Roșu (1.445 m) – La Prepeleac (1.750 m) – Mălăiești (1 720 m)",
+            "coordonate": [
+              {
+                "Busteni": { "latitudine": "45.416944", "longitudine": "25.54" }
+              },
+              {
+                "Plaiul Munticelu": {
+                  "latitudine": "45.425556",
+                  "longitudine": "25.521667"
+                }
+              },
+              {
+                "Poiana Costilei (1.360 m)": {
+                  "latitudine": "45.4386720",
+                  "longitudine": "25.5054474"
+                }
+              },
+              {
+                "Pichetul Roșu (1.445 m)": {
+                  "latitudine": "45.4611541",
+                  "longitudine": "25.4891345"
+                }
+              },
+              {
+                "La Prepeleac (1.750 m)": {
+                  "latitudine": "45.4685807",
+                  "longitudine": "25.4715818"
+                }
+              },
+              {
+                "Mălăiești (1 720 m)": {
+                  "latitudine": "45.4658794",
+                  "longitudine": "25.4540884"
+                }
+              }
+            ],
+            "marcaj": "triunghi rosu"
+          },
+          {
+            "traseu": "Râșnov – Mălăiești (1.720 m) – Vârful Omul (2.505 m)",
+            "coordonate": [
+              {
+                "Râșnov": {
+                  "latitudine": "45.5744065",
+                  "longitudine": "25.4548549"
+                }
+              },
+              {
+                "Mălăiești (1 720 m)": {
+                  "latitudine": "45.4658794",
+                  "longitudine": "25.4540884"
+                }
+              },
+              {
+                "Vârful Omul (2.505 m)": {
+                  "latitudine": "45.4466726",
+                  "longitudine": "25.4566528"
+                }
+              }
+            ],
+            "marcaj": "banda albastra"
+          }
+        ]
+      },
+      {
+        "denumire": "Piatra Craiului",
+        "trasee": [
+          {
+            "traseu": "Traseul Zarnesti – Cabana Curmatura prin Prapastiile Zarnestiului ",
+            "coordonate": [
+              {
+                "Zarnesti": {
+                  "latitudine": "45.5601142",
+                  "longitudine": "25.3225445"
+                }
+              },
+              {
+                "Cabana Curmatura": {
+                  "latitudine": "45.5499654",
+                  "longitudine": "25.2552673"
+                }
+              }
+            ],
+            "marcaj": "banda albastra"
+          },
+          {
+            "traseu": "Creasta Nordica: Zona refugiului de la Virful Ascutit -virful Timbalul Mare – Piscul Baciului (virful La Om) – Saua Grindului",
+            "coordonate": [
+              {
+                "Virful Ascutit": {
+                  "latitudine": "45.5475334",
+                  "longitudine": "25.2289894"
+                }
+              },
+              {
+                "virful Timbalul Mare": {
+                  "latitudine": "45.5450705",
+                  "longitudine": "25.2296199"
+                }
+              },
+              {
+                "virful La Om": {
+                  "latitudine": "45.5269096",
+                  "longitudine": "25.2101779"
+                }
+              },
+              {
+                "Saua Grindului": {
+                  "latitudine": "45.5250855",
+                  "longitudine": "25.2085699"
+                }
+              }
+            ],
+            "marcaj": "punct rosu"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "trasee": [
+      {
+        "denumire": "Bucegi",
+        "puncte": [
+          {
+            "id": "Busteni"
+          },
+          {
+            "id": "Plaiul Munticelu"
+          },
+          {
+            "id": "Poiana Costilei (1.360 m)"
+          },
+          {
+            "id": "Pichetul Roșu (1.445 m)"
+          },
+          {
+            "id": "La Prepeleac (1.750 m)"
+          },
+          {
+            "id": "Mălăiești (1 720 m)"
+          },
+          {
+            "id": "Râșnov"
+          },
+          {
+            "id": "Vârful Omul (2.505 m)"
+          }
+        ],
+        "legaturi": [
+          {
+            "id": "Busteni – Plaiul Munticelu",
+            "source": "Busteni",
+            "target": "Plaiul Munticelu",
+            "turisti": "12",
+            "marcaj": "triunghi rosu"
+          },
+          {
+            "id": "Plaiul Munticelu – Poiana Costilei (1.360 m)",
+            "source": "Plaiul Munticelu",
+            "target": "Poiana Costilei (1.360 m)",
+            "turisti": "10",
+            "marcaj": "triunghi rosu"
+          },
+          {
+            "id": "Poiana Costilei (1.360 m) – Pichetul Roșu (1.445 m)",
+            "source": "Poiana Costilei (1.360 m)",
+            "target": "Pichetul Roșu (1.445 m)",
+            "turisti": "10",
+            "marcaj": "triunghi rosu"
+          },
+          {
+            "id": "La Prepeleac (1.750 m) – Mălăiești (1 720 m)",
+            "source": "La Prepeleac (1.750 m)",
+            "target": "Mălăiești (1 720 m)",
+            "turisti": "8",
+            "marcaj": "triunghi rosu"
+          },
+          {
+            "id": "Râșnov – Mălăiești (1.720 m)",
+            "source": "Râșnov",
+            "target": "Mălăiești (1 720 m)",
+            "turisti": "4",
+            "marcaj": "banda albastra"
+          },
+          {
+            "id": "Mălăiești (1.720 m) – Vârful Omul (2.505 m)",
+            "source": "Mălăiești (1.720 m)",
+            "target": "Vârful Omul (2.505 m)",
+            "turisti": "4",
+            "marcaj": "banda albastra"
+          }
+        ]
+      },
+      {
+        "denumire": "Piatra Craiului",
+        "puncte": [
+          {
+            "id": "Zarnesti"
+          },
+          {
+            "id": "Cabana Curmatura"
+          },
+          {
+            "id": "Virful Ascutit"
+          },
+          {
+            "id": "Virful Timbalul Mare"
+          },
+          {
+            "id": "Virful La Om"
+          },
+          {
+            "id": "Saua Grindului"
+          }
+        ],
+        "legaturi": [
+          {
+            "id": "Virful Ascutit -Virful Timbalul Mare",
+            "source": "Virful Ascutit",
+            "target": "Virful Timbalul Mare",
+            "turisti": "16",
+            "marcaj": "punct rosu"
+          },
+          {
+            "id": "Virful Timbalul Mare – Piscul Baciului (virful La Om)",
+            "source": "Virful Timbalul Mare",
+            "target": "Virful La Om",
+            "turisti": "16",
+            "marcaj": "punct rosu"
+          },
+          {
+            "id": "Piscul Baciului (virful La Om)– Saua Grindului",
+            "source": "Virful La Om",
+            "target": "Saua Grindului",
+            "turisti": "16",
+            "marcaj": "punct rosu"
+          },
+          {
+            "id": "Traseul Zarnesti – Cabana Curmatura prin Prapastiile Zarnestiului",
+            "source": "Zarnesti",
+            "target": "Cabana Curmatura",
+            "turisti": "24",
+            "marcaj": "banda albastra"
+          }
+        ]
+      }
+    ]
+  }
+]
