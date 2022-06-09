@@ -142,10 +142,10 @@ function initGraph(graphData) {
       {
         selector: "node",
         style: {
-          width: "36px",
-          height: "36px",
-          "background-image": "./assets/resources/tick.png",
-          "background-color": "gray",
+          width: "48px",
+          height: "48px",
+          "background-image": "./assets/resources/tick-48.png",
+          "background-color": "white",
           //content: //"data(id)",
         },
       },
@@ -366,17 +366,17 @@ function initGraph(graphData) {
     if ($.isEmptyObject(event.target._private.data)) {
       if (selectedNodes)
         for (var i = 0; i < selectedNodes.length; i++)
-          selectedNodes[i].style("background-color", "gray");
+          selectedNodes[i].style("background-color", "white");
 
       if (predecessorsSelected) {
         selectedPredecesors["edges"].animate({
           style: { "line-color": colours["orange"] },
         });
         selectedPredecesors["nodes"].animate({
-          style: { "background-color": "gray" },
+          style: { "background-color": "white" },
         });
         for (var i = 0; i < selectedNodes.length; i++)
-          selectedNodes[i].style("background-color", "gray");
+          selectedNodes[i].style("background-color", "white");
 
         predecessorsSelected = false;
       }
