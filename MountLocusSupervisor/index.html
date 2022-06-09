@@ -55,6 +55,7 @@
     <script src="assets/extensions/export/bootstrap-table-export.min.js"></script>
     <script src="assets/extensions/filter-control/bootstrap-table-filter-control.js"></script>
     <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <script src="./Cytoscape/cytoscape-html-label.js"></script>
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="Cytoscape/cytoscape.js-popper/cytoscape-popper.js"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
@@ -106,10 +107,10 @@
 
       <br />
 
-      <div style="text-align: center">
+      <div class="data_selectpicker" style="text-align: center">
         <select
           class="selectpicker"
-          id="selectpicker"
+          id="selectpickerData"
           showtick="true"
           multiple
           data-max-options="1"
@@ -287,6 +288,18 @@
       </div>
 
       <div class="cytoscape-data">
+        <div class="masiv_selectpicker" style="text-align: center">
+          <select
+            class="selectpicker"
+            id="selectpickerMasiv"
+            showtick="true"
+            multiple
+            data-max-options="1"
+            data-live-search="true"
+            data-width="fit"
+            title="Selectati masivul"
+          ></select>
+        </div>
         <div class="cytoscape-graph-title">
           <span>Graficul traseelor</span>
         </div>
