@@ -137,8 +137,6 @@ function processPerEdgeTouristsNumber(edges) {
         tourist[1].traseu.denumire.indexOf(edge.target) !== -1
       ) {
         edge.turisti += 1;
-      } else {
-        console.log('debug usage');
       }
     });
   });
