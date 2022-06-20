@@ -19,12 +19,12 @@ var selectedNodes = {};
 var selectedPredecesors = {};
 var predecessorsSelected = false;
 
-colours["green"] = "#006568";
-colours["light orange"] = "#FF6F01";
-colours["blue"] = "#90CAF9";
-colours["yellow"] = "#FED000";
-colours["light blue"] = "#D5E8FD";
-colours["orange"] = "#FA8C05";
+colours['green'] = '#006568';
+colours['light orange'] = '#FF6F01';
+colours['blue'] = '#90CAF9';
+colours['yellow'] = '#FED000';
+colours['light blue'] = '#D5E8FD';
+colours['orange'] = '#FA8C05';
 
 //#endregion
 
@@ -32,71 +32,71 @@ colours["orange"] = "#FA8C05";
 
 function initFirebase() {
   var config = {
-    apiKey: "AIzaSyAamzthwiIs-gY4SzeuH_fOu87QqF_fE60",
-    authDomain: "mountlocus.firebaseio.com",
-    databaseURL: "https://mountlocus.firebaseio.com",
-    projectId: "mountlocus",
-    storageBucket: "mountlocus.appspot.com",
+    apiKey: 'AIzaSyAamzthwiIs-gY4SzeuH_fOu87QqF_fE60',
+    authDomain: 'mountlocus.firebaseio.com',
+    databaseURL: 'https://mountlocus.firebaseio.com',
+    projectId: 'mountlocus',
+    storageBucket: 'mountlocus.appspot.com',
   };
 
   firebase.initializeApp(config);
 
   ref = firebase.database().ref();
-  touristsRef = firebase.database().ref("turisti/");
+  touristsRef = firebase.database().ref('turisti/');
 
   processFirebaseData(ref);
 }
 
 function processFirebaseData(ref) {
-  ref.on("value", function (snapshot) {
+  ref.on('value', function (snapshot) {
     tourists = {};
     counter = 0;
-    $("#table").bootstrapTable("removeAll");
+    $('#table').bootstrapTable('removeAll');
 
     snapshot.forEach(function (childSnapshot) {
       refKey = childSnapshot.key;
       childSnapshot.forEach(function (childData) {
-        $("#table").bootstrapTable("append", {
+        $('#table').bootstrapTable('append', {
           id: childData.key,
-          "Nume si prenume": childData.val()["numePrenume"],
-          Telefon: childData.val()["telefon"],
-          GrupaMontana: childData.val()["grupaMontana"],
-          DenumireTraseu: childData.val()["traseu"]["denumire"],
-          "Marcaj traseu": childData.val()["traseu"]["marcajVizual"],
-          Data: childData.val()["data"],
-          Latitudine: childData.val()["latitudine"],
-          Longitudine: childData.val()["longitudine"],
+          'Nume si prenume': childData.val()['numePrenume'],
+          Telefon: childData.val()['telefon'],
+          GrupaMontana: childData.val()['grupaMontana'],
+          DenumireTraseu: childData.val()['traseu']['denumire'],
+          'Marcaj traseu': childData.val()['traseu']['marcajVizual'],
+          Data: childData.val()['data'],
+          Latitudine: childData.val()['latitudine'],
+          Longitudine: childData.val()['longitudine'],
           Localizare:
             '<a class="locationRef" href="#scrolldown">Vezi locatia pe harta</a>',
           Imagine1:
-            childData.val()["imagine1"] +
-            "\n" +
+            childData.val()['imagine1'] +
+            '\n' +
             '<div class="img-container"><img class="centered" src=' +
             '"' +
-            childData.val()["imagine1"] +
+            childData.val()['imagine1'] +
             '"></img></div>',
           Imagine2:
-            childData.val()["imagine2"] +
-            "\n" +
+            childData.val()['imagine2'] +
+            '\n' +
             '<div class="img-container"><img class="centered" src=' +
             '"' +
-            childData.val()["imagine2"] +
+            childData.val()['imagine2'] +
             '"></img></div>',
         });
         tourists[childData.key] = childData.val();
 
-        dateArray.push(childData.val()["data"].slice(0, -9));
+        dateArray.push(childData.val()['data'].slice(0, -9));
       });
     });
     uniqueDateArray = new Set(dateArray);
 
-    $("#selectpickerData").empty();
+    $('#selectpickerData').empty();
     uniqueDateArray.forEach((date) => {
-      $("#selectpickerData").append("<option>" + date + "</option>");
+      $('#selectpickerData').append('<option>' + date + '</option>');
     });
 
-    $("#selectpickerData").selectpicker("refresh");
-    $("#table").bootstrapTable("refresh");
+    $('#selectpickerData').selectpicker('refresh');
+    $('#table').bootstrapTable('refresh');
   });
 }
 
@@ -107,20 +107,20 @@ function processFirebaseData(ref) {
 function addEdgeLabels() {
   cy.htmlLabel([
     {
-      query: "edge",
+      query: 'edge',
       // valign: "top",
       // halign: "right",
-      valignBox: "top",
-      halignBox: "center",
-      ealign: "midpoint",
+      valignBox: 'top',
+      halignBox: 'center',
+      ealign: 'midpoint',
       autorotate: true,
-      cssClass: "",
+      cssClass: '',
       tpl: function (data) {
         return `<div class="edge-label">
                   <div class="edge-label-trail-tag">
                           <span class="trail-tag-${data.marcaj.replace(
-                            " ",
-                            "-"
+                            ' ',
+                            '-'
                           )}"></span>
                   </div>           
                 </div>`;
@@ -129,9 +129,26 @@ function addEdgeLabels() {
   ]);
 }
 
+function processPerEdgeTouristsNumber(edges) {
+  edges.forEach((edge) => {
+    Object.entries(tourists).forEach((tourist) => {
+      if (
+        tourist[1].traseu.denumire.indexOf(edge.source) !== -1 &&
+        tourist[1].traseu.denumire.indexOf(edge.target) !== -1
+      ) {
+        edge.turisti += 1;
+      } else {
+        console.log('debug usage');
+      }
+    });
+  });
+
+  return edges;
+}
+
 function initGraph(graphData) {
   var cy = (window.cy = cytoscape({
-    container: document.getElementById("cy"),
+    container: document.getElementById('cy'),
     wheelSensitivity: 0.1,
     animate: true,
     animationDuration: 2000,
@@ -140,29 +157,29 @@ function initGraph(graphData) {
 
     style: [
       {
-        selector: "node",
+        selector: 'node',
         style: {
-          width: "48px",
-          height: "48px",
-          "background-image": "./assets/resources/tick-48.png",
-          "background-color": "white",
+          width: '48px',
+          height: '48px',
+          'background-image': './assets/resources/tick-48.png',
+          'background-color': 'white',
           //content: //"data(id)",
         },
       },
 
       {
-        selector: "edge",
+        selector: 'edge',
         style: {
-          "curve-style": "bezier",
-          "target-arrow-shape": "triangle",
-          "line-color": colours.orange,
-          "curve-style": "bezier",
-          content: "data(text)",
-          "text-wrap": "wrap",
-          "text-margin-y": "15px",
-          "font-size": "18",
-          "font-family": "Century Gothic,CenturyGothic,AppleGothic,sans-serif",
-          "arrow-scale": 2.5,
+          'curve-style': 'bezier',
+          'target-arrow-shape': 'triangle',
+          'line-color': colours.orange,
+          'curve-style': 'bezier',
+          content: 'data(text)',
+          'text-wrap': 'wrap',
+          'text-margin-y': '15px',
+          'font-size': '18',
+          'font-family': 'Century Gothic,CenturyGothic,AppleGothic,sans-serif',
+          'arrow-scale': 2.5,
         },
       },
     ],
@@ -178,12 +195,14 @@ function initGraph(graphData) {
   var nodes = graphData[0].puncte;
   var edges = graphData[0].legaturi;
 
+  edges = processPerEdgeTouristsNumber(edges);
+
   for (var k = 0; k < nodes.length; k++) {
     cy.add([
       {
-        group: "nodes",
+        group: 'nodes',
         data: {
-          id: nodes[k]["id"],
+          id: nodes[k]['id'],
           // label: nodes[k]["id"],
         },
       },
@@ -196,13 +215,13 @@ function initGraph(graphData) {
     try {
       cy.add([
         {
-          group: "edges",
+          group: 'edges',
           data: {
-            id: edges[k]["id"],
-            source: edges[k]["source"],
-            target: edges[k]["target"],
-            text: edges[k]["turisti"],
-            marcaj: edges[k]["marcaj"],
+            id: edges[k]['id'],
+            source: edges[k]['source'],
+            target: edges[k]['target'],
+            text: edges[k]['turisti'],
+            marcaj: edges[k]['marcaj'],
           },
         },
       ]);
@@ -213,7 +232,7 @@ function initGraph(graphData) {
 
   addEdgeLabels();
 
-  var bfLayout = { name: "breadthfirst" };
+  var bfLayout = { name: 'breadthfirst' };
   cy.layout(bfLayout).run();
 
   var cyNodes = cy.nodes();
@@ -241,15 +260,15 @@ function initGraph(graphData) {
     var ref = ele.popperRef();
 
     // Since tippy constructor requires DOM element/elements, create a placeholder
-    var dummyDomEle = document.createElement("div");
+    var dummyDomEle = document.createElement('div');
 
     var tip = tippy(dummyDomEle, {
       getReferenceClientRect: ref.getBoundingClientRect,
-      trigger: "manual", // mandatory
+      trigger: 'manual', // mandatory
       // dom element inside the tippy:
       content: function () {
         // function can be better for performance
-        var div = document.createElement("div");
+        var div = document.createElement('div');
 
         div.innerHTML = text;
 
@@ -257,9 +276,9 @@ function initGraph(graphData) {
       },
       // your own preferences:
       arrow: true,
-      placement: "bottom",
+      placement: 'bottom',
       hideOnClick: false,
-      sticky: "reference",
+      sticky: 'reference',
 
       // if interactive:
       interactive: true,
@@ -271,7 +290,7 @@ function initGraph(graphData) {
 
   // destroy previous tippys
 
-  Array.from($("div[data-tippy-root]")).forEach((tippy) => {
+  Array.from($('div[data-tippy-root]')).forEach((tippy) => {
     tippy._tippy.destroy();
   });
 
@@ -279,12 +298,12 @@ function initGraph(graphData) {
     makeTippy(domNode, domNode._private.data.id).show();
   });
 
-  cy.on("select", "node", function (event) {
-    window["selectedNodes"] = cy.$("node:selected");
-    selectedNodes = window["selectedNodes"];
+  cy.on('select', 'node', function (event) {
+    window['selectedNodes'] = cy.$('node:selected');
+    selectedNodes = window['selectedNodes'];
 
     for (var i = 0; i < selectedNodes.length; i++) {
-      selectedNodes[i].style("background-color", colours["green"]);
+      selectedNodes[i].style('background-color', colours['green']);
     }
   });
 
@@ -318,16 +337,16 @@ function initGraph(graphData) {
   //   //})()
   // });
 
-  cy.on("click", "node", function (event) {
+  cy.on('click', 'node', function (event) {
     var node = event.target;
 
     if (predecessorsSelected) {
-      selectedPredecesors["nodes"].animate(
-        { style: { backgroundColor: colours["green"] } },
+      selectedPredecesors['nodes'].animate(
+        { style: { backgroundColor: colours['green'] } },
         { duration: 150 }
       );
-      selectedPredecesors["edges"].animate(
-        { style: { "line-color": colours["orange"] } },
+      selectedPredecesors['edges'].animate(
+        { style: { 'line-color': colours['orange'] } },
         { duration: 1 }
       );
     }
@@ -340,21 +359,21 @@ function initGraph(graphData) {
     //console.log("Incomers", this.incomers())
 
     if (predecessorsSelected == false) {
-      selectedPredecesors["nodes"] = this.predecessors().nodes();
-      selectedPredecesors["edges"] = this.predecessors().edges();
-      selectedPredecesors["currentNode"] = node;
+      selectedPredecesors['nodes'] = this.predecessors().nodes();
+      selectedPredecesors['edges'] = this.predecessors().edges();
+      selectedPredecesors['currentNode'] = node;
 
-      selectedPredecesors["edges"].animate(
-        { style: { "line-color": colours["green"] } },
+      selectedPredecesors['edges'].animate(
+        { style: { 'line-color': colours['green'] } },
         { duration: 150 }
       );
-      selectedPredecesors["nodes"].animate(
-        { style: { "background-color": colours["green"] } },
+      selectedPredecesors['nodes'].animate(
+        { style: { 'background-color': colours['green'] } },
         { duration: 150 }
       );
 
-      selectedPredecesors["currentNode"].animate(
-        { style: { "background-color": colours["green"] } },
+      selectedPredecesors['currentNode'].animate(
+        { style: { 'background-color': colours['green'] } },
         { duration: 150 }
       );
 
@@ -362,85 +381,85 @@ function initGraph(graphData) {
     }
   });
 
-  cy.on("click", function (event) {
+  cy.on('click', function (event) {
     if ($.isEmptyObject(event.target._private.data)) {
       if (selectedNodes)
         for (var i = 0; i < selectedNodes.length; i++)
-          selectedNodes[i].style("background-color", "white");
+          selectedNodes[i].style('background-color', 'white');
 
       if (predecessorsSelected) {
-        selectedPredecesors["edges"].animate({
-          style: { "line-color": colours["orange"] },
+        selectedPredecesors['edges'].animate({
+          style: { 'line-color': colours['orange'] },
         });
-        selectedPredecesors["nodes"].animate({
-          style: { "background-color": "white" },
+        selectedPredecesors['nodes'].animate({
+          style: { 'background-color': 'white' },
         });
         for (var i = 0; i < selectedNodes.length; i++)
-          selectedNodes[i].style("background-color", "white");
+          selectedNodes[i].style('background-color', 'white');
 
         predecessorsSelected = false;
       }
 
-      window["selectedNodes"] = {};
-      selectedNodes = window["selectedNodes"];
+      window['selectedNodes'] = {};
+      selectedNodes = window['selectedNodes'];
     }
   });
 }
 
 function initGraphData() {
-  fetch("https://api.jsonbin.io/b/629febf8449a1f382100d214/4")
+  fetch('https://api.jsonbin.io/b/629febf8449a1f382100d214/5')
     .then((res) => res.json())
     .then((data) => {
-      if (data.hasOwnProperty("trasee")) {
-        traseeMontane = data["trasee"];
-        initMasivSelectPicker(data["trasee"]);
+      if (data.hasOwnProperty('trasee')) {
+        traseeMontane = data['trasee'];
+        initMasivSelectPicker(data['trasee']);
       } else {
-        console.log("Unable to parse data from API");
+        console.log('Unable to parse data from API');
       }
     })
     .catch((error) => console.log(error));
 }
 
 function initMasivSelectPicker(data) {
-  $("#selectpickerMasiv").empty();
+  $('#selectpickerMasiv').empty();
   data.forEach((traseu) => {
-    if (traseu.hasOwnProperty("denumire"))
-      $("#selectpickerMasiv").append(
-        "<option>" + traseu["denumire"] + "</option>"
+    if (traseu.hasOwnProperty('denumire'))
+      $('#selectpickerMasiv').append(
+        '<option>' + traseu['denumire'] + '</option>'
       );
   });
-  $("#selectpickerMasiv").selectpicker("refresh");
+  $('#selectpickerMasiv').selectpicker('refresh');
 }
 
 function updateGraphTitle(newValue) {
-  var graphTitle = document.querySelector(".cytoscape-graph-title span");
+  var graphTitle = document.querySelector('.cytoscape-graph-title span');
   if (graphTitle.childNodes.length > 1)
     graphTitle.removeChild(graphTitle.lastChild);
-  graphTitle.appendChild(document.createTextNode(" din ".concat(newValue)));
+  graphTitle.appendChild(document.createTextNode(' din '.concat(newValue)));
 }
 
 //#endregion
 
 //#region TABLE
-var table = $("#table");
+var table = $('#table');
 
-$("#remove").on("click", function () {
-  var ids = $.map(table.bootstrapTable("getSelections"), function (row) {
+$('#remove').on('click', function () {
+  var ids = $.map(table.bootstrapTable('getSelections'), function (row) {
     return row.id;
   });
-  table.bootstrapTable("remove", {
-    field: "id",
+  table.bootstrapTable('remove', {
+    field: 'id',
     values: ids,
   });
 });
 
-$("#removeall").on("click", function () {
-  table.bootstrapTable("removeAll");
+$('#removeall').on('click', function () {
+  table.bootstrapTable('removeAll');
 });
 
 function appendRow(dataTest) {
-  $("#table").bootstrapTable("append", dataTest);
-  console.log("Appended from function" + dataTest.name);
+  $('#table').bootstrapTable('append', dataTest);
+  console.log('Appended from function' + dataTest.name);
 }
 
 function detailFormatter(index, row) {
@@ -451,36 +470,36 @@ function detailFormatter(index, row) {
         key +
         '</b><span class="col-md-10">: ' +
         value +
-        "</span></p>"
+        '</span></p>'
     );
   });
 
   htmlFinal = html.slice(1);
-  return htmlFinal.join("");
+  return htmlFinal.join('');
 }
 
 function totalFormatter() {
-  return "Total";
+  return 'Total';
 }
 
 function amountFormatter(data) {
   return `${data.length}`;
 }
 
-$("table").on("click", "tr", function (e) {
-  var table = document.getElementById("table");
+$('table').on('click', 'tr', function (e) {
+  var table = document.getElementById('table');
 
-  var id = $(e.target).closest("tr").text().slice(4, 30);
+  var id = $(e.target).closest('tr').text().slice(4, 30);
 
   var isLocationClicked = false;
   var text = $(e.target).text();
 
-  if (text == "Vezi locatia pe harta") {
+  if (text == 'Vezi locatia pe harta') {
     isLocationClicked = true;
   }
 
   if (tourists[id] && isLocationClicked) {
-    console.log("clicked");
+    console.log('clicked');
     mymap.removeLayer(marker);
     pinOnMap(
       parseFloat(tourists[id].latitudine),
@@ -504,11 +523,11 @@ var mymap = {},
   marker = {};
 
 function initMap() {
-  mymap = L.map("mapid").setView([46.2167, 24.8], 6); //.setView([51.505, -0.09], 13);
+  mymap = L.map('mapid').setView([46.2167, 24.8], 6); //.setView([51.505, -0.09], 13);
   marker = L.marker([44.456675, 26.06423]).addTo(mymap);
 
   L.tileLayer(
-    "https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=wG3vdHTAa4GLyvtsFXTg",
+    'https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key=wG3vdHTAa4GLyvtsFXTg',
     {
       attribution:
         '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
@@ -536,12 +555,12 @@ function pinOnMap(latitudine, longitudine) {
 
 //#region DOM-EVENTS
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
   var width = document.body.clientWidth;
 
-  image = document.getElementById("mountainImage");
-  scrollDownTable = document.getElementById("scrolldownTable");
-  scrollDownGraph = document.getElementById("scrolldownGraph");
+  image = document.getElementById('mountainImage');
+  scrollDownTable = document.getElementById('scrolldownTable');
+  scrollDownGraph = document.getElementById('scrolldownGraph');
 
   initComponentsEvents();
   querySelectOnVariables();
@@ -551,8 +570,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function initComponentsEvents() {
-  $("#selectpickerData").on(
-    "changed.bs.select",
+  $('#selectpickerData').on(
+    'changed.bs.select',
     function (e, clickedIndex, newValue, oldValue) {
       removeLayersfromMap();
       if (this.value.length == 0) {
@@ -571,36 +590,36 @@ function initComponentsEvents() {
     }
   );
 
-  $("#selectpickerMasiv").on(
-    "changed.bs.select",
+  $('#selectpickerMasiv').on(
+    'changed.bs.select',
     function (e, clickedIndex, newValue, oldValue) {
       updateGraphTitle(this.value);
       initGraph(
-        traseeMontane.filter((traseu) => traseu["denumire"] === this.value)
+        traseeMontane.filter((traseu) => traseu['denumire'] === this.value)
       );
       //initGraph(traseeMontane);
     }
   );
 
-  scrollDownTable.addEventListener("click", function () {
+  scrollDownTable.addEventListener('click', function () {
     document
-      .getElementById("TableContainer")
+      .getElementById('TableContainer')
       //.getElementsByClassName("pic-ctn")[0]
-      .scrollIntoView({ behavior: "smooth", block: "start" });
+      .scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
-  scrollDownGraph.addEventListener("click", function () {
+  scrollDownGraph.addEventListener('click', function () {
     document
-      .getElementsByClassName("cytoscape-data")[0]
+      .getElementsByClassName('cytoscape-data')[0]
       //.getElementsByClassName("pic-ctn")[0]
-      .scrollIntoView({ behavior: "smooth", block: "start" });
+      .scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 }
 
 function querySelectOnVariables() {
-  dataFilterSelect = document.getElementsByClassName("selectpicker")[0];
-  output = document.getElementById("data");
-  table = document.getElementById("table");
+  dataFilterSelect = document.getElementsByClassName('selectpicker')[0];
+  output = document.getElementById('data');
+  table = document.getElementById('table');
 }
 
 //#endregion
@@ -618,7 +637,7 @@ function hexToRgb(hex) {
 }
 
 function formatRgb(value) {
-  if (value) return "rgb(" + value.r + "," + value.g + "," + value.b + ")";
+  if (value) return 'rgb(' + value.r + ',' + value.g + ',' + value.b + ')';
 }
 //#endregion
 
