@@ -97,6 +97,13 @@ function processFirebaseData(ref) {
 
     $('#selectpickerData').selectpicker('refresh');
     $('#table').bootstrapTable('refresh');
+
+    if ($('#selectpickerMasiv').val().length > 0)
+      initGraph(
+        traseeMontane.filter(
+          (traseu) => traseu['denumire'] === $('#selectpickerMasiv').val()[0]
+        )
+      );
   });
 }
 
@@ -130,18 +137,18 @@ function addEdgeLabels() {
 }
 
 function processPerEdgeTouristsNumber(edges) {
-  edges.forEach((edge) => {
+  return edges.map((edge) => {
+    var mappedEdge = { ...edge };
     Object.entries(tourists).forEach((tourist) => {
       if (
         tourist[1].traseu.denumire.indexOf(edge.source) !== -1 &&
         tourist[1].traseu.denumire.indexOf(edge.target) !== -1
       ) {
-        edge.turisti += 1;
+        mappedEdge.turisti += 1;
       }
     });
+    return mappedEdge;
   });
-
-  return edges;
 }
 
 function initGraph(graphData) {
@@ -288,9 +295,7 @@ function initGraph(graphData) {
 
   // destroy previous tippys
 
-  Array.from($('div[data-tippy-root]')).forEach((tippy) => {
-    tippy._tippy.destroy();
-  });
+  destroyTippys();
 
   domNodesSelection.forEach((domNode) => {
     makeTippy(domNode, domNode._private.data.id).show();
@@ -592,9 +597,16 @@ function initComponentsEvents() {
     'changed.bs.select',
     function (e, clickedIndex, newValue, oldValue) {
       updateGraphTitle(this.value);
-      initGraph(
-        traseeMontane.filter((traseu) => traseu['denumire'] === this.value)
-      );
+      if (newValue) {
+        initGraph(
+          traseeMontane.filter((traseu) => traseu['denumire'] === this.value)
+        );
+      } else {
+        document.querySelector('#cy').innerHTML = '';
+        Array.from($('div[data-tippy-root]')).forEach((tippy) => {
+          tippy._tippy.destroy();
+        });
+      }
       //initGraph(traseeMontane);
     }
   );
@@ -636,6 +648,12 @@ function hexToRgb(hex) {
 
 function formatRgb(value) {
   if (value) return 'rgb(' + value.r + ',' + value.g + ',' + value.b + ')';
+}
+
+function destroyTippys() {
+  Array.from($('div[data-tippy-root]')).forEach((tippy) => {
+    tippy._tippy.destroy();
+  });
 }
 //#endregion
 
